@@ -112,25 +112,5 @@ def checkIfValid(s,base):
         return (base + s).isnumeric()
         
     
-        
-        
-        
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
