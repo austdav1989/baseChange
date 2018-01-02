@@ -1,11 +1,65 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #
 #This program converts a number to another base.
 
 import sys
 
 def main():
-    if len(sys.argv) == 2 and sys.argv[1] == '--help':
+    if len(sys.argv) == 3:
+        if not checkIfValid(sys.argv[2][2:],sys.argv[2][:2]):
+            print('That is not a valid number for that base. Try again.')
+            return
+        
+        printBase(sys.argv[1],sys.argv[2])
+        
+    else:
+        print('Usage: baseChange.py [-b][-x][-o][-d] number')
+        print('Use --help for more information')
+        return
+    
+def checkIfValid(s,base): #Parses number to check if valid
+    if base == '0x':
+        for i in s:
+            if i not in ('1234567890abcdefABCDEF'):
+                return False
+        return True
+    elif base == '0o':
+        for i in s:
+            if i not in ('01234567'):
+                return False
+        return True
+    elif base == '0b':
+        for i in s:
+            if i not in ('01'):
+                return False
+        return True
+    else:
+        return (base + s).isnumeric()
+    
+def convertBase(num): #converts base to base 10 for simplicity
+    if num[:2] == '0x':
+        return int(num[2:],16)
+    elif num[:2] == '0o':
+        return int(num[2:],8)
+    elif num[:2] == '0b':
+        return int(num[2:],2)
+    else: 
+        return num
+    
+def printBase(arg,num): #Function to print number in new base
+    if arg == '-b':
+        print(bin(int(convertBase(num)))[2:])
+        return
+    elif arg == '-x':
+        print(hex(int(convertBase(num)))[2:].upper())
+        return
+    elif arg == '-o':
+        print(oct(int(convertBase(num)))[2:])
+        return
+    elif arg == '-d':
+        print(int(convertBase(num))[2:])
+        return
+    elif arg == '--help':
         print('Converts a number to another base.')
         print('')
         print('baseChange.py [-b][-x][-o][-d] number')
@@ -25,92 +79,9 @@ def main():
         print('\tbaseChange.py -x 100')
         print('\tbaseChange.py -d 0b1001')
         return
-        
-    elif len(sys.argv) == 3:
-        if not checkIfValid(sys.argv[2][2:],sys.argv[2][:2]):
-            print('That is not a valid number for that base. Try again.')
-            return
-        
-        if sys.argv[1] == '-b':
-            if sys.argv[2][:2] == '0x':
-                print(bin(int(sys.argv[2],16))[2:])
-                return
-            elif sys.argv[2][:2] == '0o':
-                print(bin(int(sys.argv[2],8))[2:])
-                return
-            elif sys.argv[2][:2] == '0b':
-                print(sys.argv[2][2:])
-                return
-            else:
-                print(bin(int(sys.argv[2]))[2:])
-                return
-        elif sys.argv[1] == '-x':
-            if sys.argv[2][:2] == '0b':
-                print(hex(int(sys.argv[2],2)).upper()[2:])
-                return
-            elif sys.argv[2][:2] == '0o':
-                print(hex(int(sys.argv[2],8)).upper()[2:])
-                return
-            elif sys.argv[2][:2] == '0x':
-                print(sys.argv[2][2:].upper())
-                return
-            else:
-                print(hex(int(sys.argv[2]))[2:].upper())
-                return
-        elif sys.argv[1] == '-o':
-            if sys.argv[2][:2] == '0b':
-                print(oct(int(sys.argv[2],2))[2:])
-                return
-            elif sys.argv[2][:2] == '0x':
-                print(oct(int(sys.argv[2],16))[2:])
-                return
-            elif sys.argv[2][:2] == '0o':
-                print(sys.argv[2][2:])
-                return
-            else:
-                print(oct(int(sys.argv[2]))[2:])
-        elif sys.argv[1] == '-d':
-            if sys.argv[2][:2] == '0x':
-                print(int(sys.argv[2],16))
-                return
-            elif sys.argv[2][:2] == '0o':
-                print(int(sys.argv[2],8))
-                return
-            elif sys.argv[2][:2] == '0b':
-                print(int(sys.argv[2],2))
-                return
-            else:
-                print(sys.argv[2])
-                return
-        else:
-            print('Usage: baseChange.py [-b][-x][-o][-d] number')
-            print('Use --help for more information')
-            return
-            
     else:
         print('Usage: baseChange.py [-b][-x][-o][-d] number')
         print('Use --help for more information')
         return
-    
-def checkIfValid(s,base):
-    if base == '0x':
-        for i in s:
-            if i not in ('1234567890abcdefABCDEF'):
-                return False
-        return True
-    elif base == '0o':
-        for i in s:
-            if i not in ('01234567'):
-                return False
-        return True
-    elif base == '0b':
-        for i in s:
-            if i not in ('01'):
-                return False
-        return True
-    else:
-        return (base + s).isnumeric()
-        
-    
 if __name__ == "__main__":
     main()
